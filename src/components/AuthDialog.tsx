@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
@@ -17,6 +18,7 @@ interface AuthDialogProps {
 export default function AuthDialog({ open, onOpenChange, defaultTab = 'login' }: AuthDialogProps) {
   const [activeTab, setActiveTab] = useState(defaultTab);
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   const [loginData, setLoginData] = useState({ email: '', password: '' });
   const [registerData, setRegisterData] = useState({
@@ -44,6 +46,7 @@ export default function AuthDialog({ open, onOpenChange, defaultTab = 'login' }:
       description: 'Добро пожаловать в Golden Casino',
     });
     onOpenChange(false);
+    navigate('/profile');
   };
 
   const handleRegister = (e: React.FormEvent) => {
@@ -90,6 +93,7 @@ export default function AuthDialog({ open, onOpenChange, defaultTab = 'login' }:
       description: 'Добро пожаловать! Получите приветственный бонус 200%',
     });
     onOpenChange(false);
+    navigate('/profile');
   };
 
   return (
