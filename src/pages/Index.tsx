@@ -3,7 +3,9 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Toaster } from '@/components/ui/toaster';
 import Icon from '@/components/ui/icon';
+import AuthDialog from '@/components/AuthDialog';
 
 interface Game {
   id: number;
@@ -27,6 +29,8 @@ const games: Game[] = [
 export default function Index() {
   const [activeCategory, setActiveCategory] = useState('all');
   const [demoGame, setDemoGame] = useState<number | null>(null);
+  const [authDialogOpen, setAuthDialogOpen] = useState(false);
+  const [authDialogTab, setAuthDialogTab] = useState<'login' | 'register'>('login');
 
   const filteredGames = activeCategory === 'all' 
     ? games 
@@ -52,8 +56,23 @@ export default function Index() {
               <a href="#payment" className="text-foreground/80 hover:text-primary transition-colors">Пополнение</a>
             </nav>
             <div className="flex items-center gap-3">
-              <Button variant="outline" className="hidden sm:flex">Войти</Button>
-              <Button className="bg-gradient-to-r from-primary to-accent text-primary-foreground font-semibold">
+              <Button 
+                variant="outline" 
+                className="hidden sm:flex"
+                onClick={() => {
+                  setAuthDialogTab('login');
+                  setAuthDialogOpen(true);
+                }}
+              >
+                Войти
+              </Button>
+              <Button 
+                className="bg-gradient-to-r from-primary to-accent text-primary-foreground font-semibold"
+                onClick={() => {
+                  setAuthDialogTab('register');
+                  setAuthDialogOpen(true);
+                }}
+              >
                 Регистрация
               </Button>
             </div>
@@ -336,6 +355,13 @@ export default function Index() {
           </Card>
         </div>
       )}
+
+      <AuthDialog 
+        open={authDialogOpen} 
+        onOpenChange={setAuthDialogOpen}
+        defaultTab={authDialogTab}
+      />
+      <Toaster />
     </div>
   );
 }
